@@ -60,34 +60,9 @@ router.get("/singleuser", authRequired, async function(req, res, next) {
 
 router.post("/", async function(req, res, next) {
   try {
-    // let myJSON = JSON.stringify(req.body);
-    // console.log(myJSON);
     delete req.body._token;
-    //getting the google token and then deleteing it from the data so it can process normally
-    //const gtoken = req.body.gtoken;
-    //delete req.body.gtoken;
     const validation = validate(req.body, userSchema);
 
-    // console.log(req.body);
-    // console.log(validation.valid);
-    //this should be moved to ENV variables page under SECRETE_KEY
-
-    // secret_key = "6Ld6H48eAAAAABi8NJ-dHVybrRSd_tNBpo0JczwI";
-    // const captchaCheck = `https://www.google.com/recaptcha/api/siteverify?secret=${secret_key}&response=${gtoken}`;
-    
-    // async function tryGoogle(captchaCheck) {
-    //   let resp = await axios.post(captchaCheck);
-    //   //should return true if it's a valid user not a bot
-    //   if(!resp.data.success){
-    //     return next({
-    //       status: 400,
-    //       message: 'Youre a robot gtfooooooooooo'
-    //     });
-    //   }
-    //   return resp;
-    // }
-    // tryGoogle(captchaCheck);
-    
     //after the captcha is checked, make sure user is valid
     if (!validation.valid) {
       return next({
@@ -100,49 +75,7 @@ router.post("/", async function(req, res, next) {
     const {usertype} = newUser;
     console.log(usertype);
     // Need to set cookie so the socketio can identify the correct user.
-    //res.cookie('usertype', usertype, {maxAge: 10800}).send('cookie set');
-    /***** SOCKETIO: ON LOGIN SET THE NAMESPACE BASED OFF THE TYPE OF USER
-      CUSTOMER NEEDS TO CONNECT TO WAITSTAFF AND COOK NAMESPACE
-      COOK NEEDS TO CONNECT TO WAITSTAFF NAMESPACE ONLY
-      WAITSTAFF NEEDS TO CONNECT TO CUSTOMER NAMESPACE ONLY
-    *****/
-    // if(usertype == 'CUSTOMER'){
-    //   const waitstaffNamespace = io.of("/customer");
-    //   const cookNamespace = io.of("/customer");
-
-    //   waitstaffNamespace.on("connection", socket => {
-    //     console.log("CUSTOMER connected");
-    //   });
-    //   cookNamespace.on("connection", socket => {
-    //     console.log("CUSTOMER connected");
-    //   });
-    //   console.log("CUSTOMER connected");
-    //   waitstaffNamespace.emit("hi I'm a CUSTOMER");
-    //   cookNamespace.emit("hi I'm a CUSTOMER");
-
-    // }else if(usertype == 'COOK'){
-    //   const waitstaffNamespace = io.of("/waitstaff");
-
-    //   waitstaffNamespace.on("connection", socket => {
-    //     console.log("COOK connected");
-    //   });
-    //   console.log("COOK connected",socket.id);
-
-    //   waitstaffNamespace.emit("hi I'm a COOK connected to WAITSTAFF namespace");
-    // }else if(usertype == 'WAITSTAFF'){
-    //   const customerNamespace = io.of("/customer");
-
-    //   customerNamespace.on("connection", socket => {
-    //     console.log("WAITSTAFF connected");
-    //   });
-    //   console.log("WAITSTAFF connected");
-
-    //   customerNamespace.emit("hi I'm WAITSTAFF connected to CUSTOMER namspace");
-    // }
-    
-    //const allinfo = User.findOne(username);
-    //console.log(allinfo);
-    //console.log(newUser);
+    /
     const token = createToken(newUser);
     //const token = createToken(allinfo);
     return res.status(201).json({ token });
@@ -175,32 +108,7 @@ router.post("/adminregister",adminRequired, async function(req, res, next) {
     return next(e);
   }
 });
-/** PATCH /[handle] {userData} => {user: updatedUser} */
 
-// router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
-//   try {
-//     if ("username" in req.body || "is_admin" in req.body) {
-//       return next({ status: 400, message: "Not allowed" });
-//     }
-//     await User.authenticate({
-//       username: req.params.username,
-//       password: req.body.password
-//     });
-//     delete req.body.password;
-//     const validation = validate(req.body, userUpdateSchema);
-//     if (!validation.valid) {
-//       return next({
-//         status: 400,
-//         message: validation.errors.map(e => e.stack)
-//       });
-//     }
-
-//     const user = await User.update(req.params.username, req.body);
-//     return res.json({ user });
-//   } catch (err) {
-//     return next(err);
-//   }
-// });
 
 /** DELETE /[handle]  =>  {message: "User deleted"}  */
 
