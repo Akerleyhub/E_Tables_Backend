@@ -10,3 +10,5 @@ Express.js, Postgresql, Socketio
 - Handle security between transactions. 
 - Keeping a live server connection to the frontend so that order data can be updated to the next type of user immediately. Keeping orders continuous.
 - Usertypes: ADMIN,COOK,WAITSTAFF,CUSTOMER.
+
+![DB Diagram](https://github.com/Akerleyhub/E_Tables_Backend/blob/main/etables_ERdiagram.pdf)
